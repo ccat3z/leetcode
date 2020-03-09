@@ -1,4 +1,4 @@
-PROBLEMS=$(basename $(wildcard *.cpp))
+PROBLEMS=$(basename $(wildcard **/*.cpp))
 
 $(PROBLEMS): %: %.out
 	./$@.out
