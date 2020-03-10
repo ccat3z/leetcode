@@ -48,40 +48,69 @@ public:
         if (nums.size() == 1) return nums[0];
         if (nums.size() == 2) return max(nums[0], nums[1]);
 
-        // maxV[at] = maxV[at - 1].rob_last ? max(maxV[at - 1], nums[at] + maxV[at - 2]) : maxV[at - 1]
-        pair<int, bool> maxV[nums.size()];
-        maxV[0].first = nums[0], maxV[0].second = true;
-
-        if (nums[0] > nums[1]) {
-            maxV[1].first = nums[0];
-            maxV[1].second = false;
-        } else {
-            maxV[1].first = nums[1];
-            maxV[1].second = true;
-        }
+        // maxV[at] = max(maxV[no_skip], nums[at] + maxV[skip])
+        int max_skip = nums[0];
+        int max_no_skip = nums[0] > nums[1] ? 0 : nums[1];
+        int max_now = 0;
 
         for (int at = 2; at < nums.size(); ++at) {
-            if (maxV[at - 1].second) {
-                if (maxV[at - 1].first > nums[at] + maxV[at - 2].first) {
-                    maxV[at].first = maxV[at - 1].first;
-                    maxV[at].second = false;
-                } else {
-                    maxV[at].first = nums[at] + maxV[at - 2].first;
-                    maxV[at].second = true;
-                }
+            if (max_no_skip > max_skip + nums[at]) {
+                max_now = max_no_skip;
+
+                max_skip = max_no_skip;
+                max_no_skip = 0;
             } else {
-                maxV[at].first = nums[at] + maxV[at - 1].first;
-                maxV[at].second = true;
+                max_now = max_skip + nums[at];
+
+                max_skip = max(max_no_skip, max_skip);
+                max_no_skip = max_now;
             }
         }
 
-        return maxV[nums.size() - 1].first;
+        return max_now;
     }
+
+    // int rob2(vector<int>& nums) {
+    //     if (nums.size() == 0) return 0;
+    //     if (nums.size() == 1) return nums[0];
+    //     if (nums.size() == 2) return max(nums[0], nums[1]);
+
+    //     // maxV[at] = maxV[at - 1].rob_last ? max(maxV[at - 1], nums[at] + maxV[at - 2]) : maxV[at - 1]
+    //     pair<int, bool> maxV[nums.size()];
+    //     maxV[0].first = nums[0], maxV[0].second = true;
+
+    //     if (nums[0] > nums[1]) {
+    //         maxV[1].first = nums[0];
+    //         maxV[1].second = false;
+    //     } else {
+    //         maxV[1].first = nums[1];
+    //         maxV[1].second = true;
+    //     }
+
+    //     for (int at = 2; at < nums.size(); ++at) {
+    //         if (maxV[at - 1].second) {
+    //             if (maxV[at - 1].first > nums[at] + maxV[at - 2].first) {
+    //                 maxV[at].first = maxV[at - 1].first;
+    //                 maxV[at].second = false;
+    //             } else {
+    //                 maxV[at].first = nums[at] + maxV[at - 2].first;
+    //                 maxV[at].second = true;
+    //             }
+    //         } else {
+    //             maxV[at].first = nums[at] + maxV[at - 1].first;
+    //             maxV[at].second = true;
+    //         }
+    //     }
+
+    //     return maxV[nums.size() - 1].first;
+    // }
 };
 // @lc code=end
 
 int main() {
     vector<int> example = {1,2,3,1};
+    cout << Solution().rob(example) << ' ';
+    example = {2,1,1,2};
     cout << Solution().rob(example) << ' ';
     example = {2,7,9,3,1};
     cout << Solution().rob(example) << endl;
