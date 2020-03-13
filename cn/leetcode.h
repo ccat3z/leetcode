@@ -10,6 +10,10 @@ namespace leetcode {
         TreeNode(T val) : val(val) {};
         TreeNode(T val, TreeNode *left, TreeNode *right) : val(val), left(left), right(right) { }
         TreeNode(T val, TreeNode *left) : val(val), left(left) { }
+        TreeNode(T val, std::nullptr_t, TreeNode *right) : val(val), right(right) { }
+        TreeNode(T val, T left, T right) : val(val), left(new TreeNode(left)), right(new TreeNode(right)) { }
+        TreeNode(T val, T left, std::nullptr_t right) : val(val), left(new TreeNode(left)) { }
+        TreeNode(T val, std::nullptr_t left, T right) : val(val), right(new TreeNode(right)) { }
         TreeNode(std::initializer_list<T> tree) : TreeNode(tree.begin(), tree.end()) { }
         TreeNode(const T *begin, const T *end) : TreeNode(*begin) {
             int size = end - begin;
