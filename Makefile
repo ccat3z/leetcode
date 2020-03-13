@@ -6,6 +6,9 @@ $(PROBLEMS): %: %.out
 $(addsuffix .out,$(PROBLEMS)): %.out: %.cpp
 	g++ -o $@ $(@:.out=.cpp)
 
+%: %.cpp
+%.o: %.cpp
+
 .PHONY: clean $(PROBLEMS)
 clean:
 	- rm *.out
