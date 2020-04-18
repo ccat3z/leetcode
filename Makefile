@@ -3,6 +3,7 @@ env_of=$(shell echo '$(patsubst %/,%,$(dir $1))' | tr '[:lower:]' '[:upper:]' | 
 
 # flags
 # CXX_FLAGS_LANQIAO_2019_3=--std=c++98
+CXX_FLAGS_LANQIAO_2020_4=--std=c++98
 
 # targets
 PROBLEMS=$(basename $(wildcard **/*.cpp))
