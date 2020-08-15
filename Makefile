@@ -10,7 +10,7 @@ PROBLEMS=$(basename $(wildcard **/*.cpp))
 
 $(PROBLEMS): %: %.out
 	@echo "running $@.out"
-	@if [ -f "$@.data" ]; then timeout 5s ./$@.out < $@.data; else timeout 5s ./$@.out; fi
+	@if [ -f "$@.data" ]; then time timeout 5s ./$@.out < $@.data; else timeout 5s ./$@.out; fi
 
 $(addsuffix .out,$(PROBLEMS)): %.out: %.cpp
 	g++ $(CXX_FLAGS_$(call env_of, $*)) -o $@ $(@:.out=.cpp)
