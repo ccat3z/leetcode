@@ -41,6 +41,7 @@ while (!cin.eof);
 * stl container
   
   * `utility`: `pair`  
+  * `bitset`
 
 * range mid `begin + (end - begin) / 2`
 
@@ -48,7 +49,7 @@ while (!cin.eof);
 
 ## 数论
 
-* GCD(a, b), a > b 最大公约数
+* GCD(a, b), a > b 最大公约数, (`C++ <numeric> std::gcd`)
 
   ``` go
   func gcd(int a, b) int {
@@ -68,7 +69,7 @@ while (!cin.eof);
     y -= x * (a / b)
     return
   }
-  ```
+* LCM(a, b), 最小公倍数 (`C++ <numeric> std::lcm`)
 
 * `a%p`的逆元`x`: `ax % p = 1` `x`最小解
   * `x, _ = exgcd(a, p)`
