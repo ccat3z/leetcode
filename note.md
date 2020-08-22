@@ -36,6 +36,8 @@ fclose(stdout);
 while (!cin.eof);
 ```
 
+* 浮点数比较: `<cmath> fabs(a - b) < 1e-6`;
+
 * stl algorithm
 
 * stl container
