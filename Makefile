@@ -6,18 +6,19 @@ CXX    = g++
 # CXX_FLAGS_LANQIAO_2019_3 = --std=c++98
 CXX_FLAGS_LANQIAO_2020_4 = --std=c++98
 PANDOC = pandoc
+TEST_PREFIX = test@
 
 # answers
 ANSWER_FILES=$(wildcard **/*.cpp)
-TEST_TARGETS=$(ANSWER_FILES:%=test/%)
+TEST_TARGETS=$(ANSWER_FILES:%=$(TEST_PREFIX)%)
 .PHONY: $(TEST_TARGETS)
 
 ## *.cpp answers
 CXX_TEST_TARGETS=$(filter %.cpp,$(TEST_TARGETS))
-$(CXX_TEST_TARGETS): test/%.cpp: %.out
+$(CXX_TEST_TARGETS): $(TEST_PREFIX)%.cpp: %.out
 	@echo "running $<"
 	@if [ -f "$*.data" ]; then timeout 5s $< < $*.data; else timeout 5s $<; fi
-$(CXX_TEST_TARGETS:test/%.cpp=%.out): %.out: %.cpp
+$(CXX_TEST_TARGETS:$(TEST_PREFIX)%.cpp=%.out): %.out: %.cpp
 	$(CXX) $(CXX_FLAGS_$(call env_of,$*)) -o $@ $(@:.out=.cpp)
 
 # note
