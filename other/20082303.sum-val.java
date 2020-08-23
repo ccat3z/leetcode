@@ -13,14 +13,13 @@ public class Main {
             res[i] = help(arr[i]);
         }
         for (int i = 0; i < res.length; i++) {
-            System.out.print(res[i]);
-            System.out.print(" ");
+            System.out.println(res[i]);
         }
     }
     private static int help(int num) {
         int as = num / 10;
         int a = num % 10;
         if (as == 0) return a;
-        return Math.max(help(as) + a, help(as - 1) + a + 10);
+        return (a == 9) ? help(as) + a : help(as - 1) + a + 10;
     }
 }
