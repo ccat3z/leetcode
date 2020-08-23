@@ -49,6 +49,10 @@ while (!cin.eof);
 
 # 数学
 
+## 位运算
+
+* `n &= n - 1`: 敲除最右边的1 (Brian Kernighan)
+
 ## 数论
 
 * GCD(a, b), a > b 最大公约数, (`C++ <numeric> std::gcd`)
