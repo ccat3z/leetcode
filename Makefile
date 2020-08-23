@@ -20,10 +20,10 @@ $(CXX_TEST_TARGETS:$(TEST_PREFIX)%.cpp=%.out): %.out: %.cpp
 $(CXX_TEST_TARGETS:$(TEST_PREFIX)%=$(RUN_ON_SAVE_PREFIX)%): $(RUN_ON_SAVE_PREFIX)%: $(TEST_PREFIX)%
 
 # note
-note.pdf: note.md template.tex
+note.pdf: note.md note.tex
 	$(PANDOC) note.md \
 		--top-level-division=section \
-		--template template.tex \
+		--template note.tex \
 		--pdf-engine=xelatex \
 		-o note.pdf
 $(RUN_ON_SAVE_PREFIX)note.md: note.pdf
