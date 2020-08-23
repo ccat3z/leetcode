@@ -1,18 +1,20 @@
-# utils
-
-# env_of lanqiao-2019-3
-env_of=$(shell echo '$(patsubst %/,%,$(dir $1))' | tr '[:lower:]' '[:upper:]' | tr - _)
-# input_of cn/1.test.cpp
-input_of=$(shell if [ -f '$(basename $1).data' ]; then echo $(basename $1).data; else echo /dev/null; fi)
+# executable
+CXX    = g++
+JAVA   = java   # java >= 11
+PANDOC = pandoc
 
 # flags
-CXX    = g++
 # CXX_FLAGS_LANQIAO_2019_3 = --std=c++98
 CXX_FLAGS_LANQIAO_2020_4 = --std=c++98
-JAVA   = java  # java >= 11
-PANDOC = pandoc
 TEST_PREFIX = test@
 RUN_ON_SAVE_PREFIX  = runonsave@
+
+# utils
+## env_of lanqiao-2019-3
+env_of=$(shell echo '$(patsubst %/,%,$(dir $1))' | tr '[:lower:]' '[:upper:]' | tr - _)
+
+## input_of cn/1.test.cpp
+input_of=$(shell if [ -f '$(basename $1).data' ]; then echo $(basename $1).data; else echo /dev/null; fi)
 
 # test answers
 TEST_TARGETS=$(patsubst %,$(TEST_PREFIX)%,$(wildcard **/*.cpp **/*.java))
