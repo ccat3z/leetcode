@@ -1,0 +1,88 @@
+\documentclass[a4paper, fontset=fandol, 10pt, linespread=1, scheme=chinese]{ctexart}
+
+% math utils
+\usepackage{amsmath}
+\usepackage{subfiles}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{esint}
+
+% table
+\usepackage{longtable}
+\usepackage{booktabs}
+
+% link
+\usepackage[colorlinks=true, pdfborder={0 0 0}, hidelinks]{hyperref}
+
+% pdf utils
+\usepackage{pdfpages}
+
+% mock data
+\usepackage{lipsum}
+
+% graphics
+\usepackage{graphicx}
+\usepackage{subfig}
+
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+% decale graphic format
+\DeclareGraphicsRule{plantuml}{eps}{*}{}
+
+% Prevent LaTeX from floating this figures
+% Author: https://stackoverflow.com/a/58840456
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[h]
+} {
+    \endorigfigure
+}
+
+% tight list (used by pandoc)
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0em}\setlength{\parskip}{0em}%
+}
+
+% code enviroment (used by pandoc)
+$highlighting-macros$
+
+% page style
+\usepackage{multicol}
+\usepackage[margin=1cm]{geometry}
+\pagestyle{empty}
+
+% CTeX Configs
+\setcounter{secnumdepth}{3}
+\ctexset{%
+    section = {
+        format = \heiti\sffamily\normalsize\bfseries
+    },
+    subsection = {
+        format = \heiti\sffamily\normalsize\bfseries
+    },
+    subsubsection = {
+        format = \heiti\sffamily\normalsize
+    }
+}
+
+% Table Of Content
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\begin{document}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\begin{multicols}{2}
+$body$
+\end{multicols}
+
+\end{document}

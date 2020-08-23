@@ -2,50 +2,58 @@
 
 ## C++ Snippets
 
-* class & ostream
+### define class
 
 ``` c++
 class Foo {
 public:
     Foo() { this->a = 1; }
     int a;
-    friend ostream &operator<<(ostream &ostream, Foo &f);
 private:
-    int _b;
-}
-
-ostream &operator<<(ostream &ostream, Foo &f) {
-    ostream << f._b;;
-}
+};
 ```
 
-* file input/output
+### io
+
+#### \<iostream\>
 
 ``` c++
-#include <cstdio>
-#include <iostream>
+ostream &operator<<(ostream &o, Foo &f);
+istream &operator>>(istream &i, Foo &f);
+```
+
+#### \<cstdio\>
+
+``` c++
 freopen("data.in", "r", stdin);
 freopen("data.out", "w", stdout);
 fclose(stdin);
 fclose(stdout);
 ```
 
-* iostresm
-
-``` c++
-while (!cin.eof);
-```
-
-* 浮点数比较: `<cmath> fabs(a - b) < 1e-6`;
-
-* stl algorithm
-
-* stl container
+### other utilities
   
-  * `utility`: `pair`  
-  * `bitset`
+* `<utility>`: `pair`
+* `<bitset>`
 
-* range mid `begin + (end - begin) / 2`
+### useful snippets
+
+* mid of $[begin, end]$: $begin + (end - begin) / 2$
+* $float = float$: $\underline{cmath}.fabs(a - b) < 1e-6$
+
+# DP
+
+背包类.
+`w`: 背包大小, `w_n`: `n`的重量, `v_n`: `n`的价值,
+  
+``` c++
+// 最大价值
+f(/* 0.. */ n, w) = max(
+  /* 全选 */ f(n - 1, w - w_n) + v_n,
+  /* 部分 */ ...,
+  /* 不选 */ f(n - 1, w)
+)
+```
 
 # 数学
 
@@ -55,7 +63,10 @@ while (!cin.eof);
 
 ## 数论
 
-* GCD(a, b), a > b 最大公约数, (`C++ <numeric> std::gcd`)
+### 最大公约数 GCD
+
+  $gcd(a, b) a > b$
+  (`c++`: `<numeric>gcd`)
 
   ``` go
   func gcd(int a, b) int {
@@ -75,28 +86,40 @@ while (!cin.eof);
     y -= x * (a / b)
     return
   }
-* LCM(a, b), 最小公倍数 (`C++ <numeric> std::lcm`)
+  ```
 
-* `a%p`的逆元`x`: `ax % p = 1` `x`最小解
-  * `x, _ = exgcd(a, p)`
-  * 若`p`为素数: `x = a^(p - 2) % p` (费马小定理)
-  * `(n/a) % p = nx % p`
+### 最小公倍数 LCM
+
+$lcm(a, b)$
+(`c++`: `<numeric>lcm`)
+
+### 逆元
+
+$a \% p$的逆元$x$: $a x \% p = 1$
+
+* $x, \_ = exgcd(a, p)$
+* 若$p$为素数: $x = a^{(p - 2)} \% p$ (费马小定理)
+
+应用场景
+
+* $\textbf{(n/a) \% p = nx \% p}$
 
 ## 组合数学
 
-* 排列 Permutation
-  ```
-  P(n, k) = n! / (n - k)!
-  ```
+### 排列 Permutation
 
-* 组合 Combination
+```
+P(n, k) = n! / (n - k)!
+```
+
+### 组合 Combination
   
-  ```
-  C(n, k) = n! / (n - k)! / k!
-          = C(n - 1, k - 1) + C(n - 1, k)
-          = C(n - 1, k) * n / (n - k)
-  C(n, 0) = C(n, n) = 1
-  ```
+```
+C(n, k) = n! / (n - k)! / k!
+        = C(n - 1, k - 1) + C(n - 1, k)
+        = C(n - 1, k) * n / (n - k)
+C(n, 0) = C(n, n) = 1
+```
 
 # Platform
 
