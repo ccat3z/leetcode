@@ -9,7 +9,7 @@ input_of=$(shell if [ -f '$(basename $1).data' ]; then echo $(basename $1).data;
 CXX    = g++
 # CXX_FLAGS_LANQIAO_2019_3 = --std=c++98
 CXX_FLAGS_LANQIAO_2020_4 = --std=c++98
-JAVA   = /usr/lib/jvm/java-11-openjdk/bin/java  # java >= 11
+JAVA   = java  # java >= 11
 PANDOC = pandoc
 TEST_PREFIX = test@
 RUN_ON_SAVE_PREFIX  = runonsave@
