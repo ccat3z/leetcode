@@ -8,6 +8,7 @@ CXX_FLAGS_LANQIAO_2020_4=--std=c++98
 # targets
 PROBLEMS=$(basename $(wildcard **/*.cpp))
 
+.PHONY: $(PROBLEMS)
 $(PROBLEMS): %: %.out
 	@echo "running $@.out"
 	@if [ -f "$@.data" ]; then time timeout 5s ./$@.out < $@.data; else timeout 5s ./$@.out; fi
@@ -18,6 +19,6 @@ $(addsuffix .out,$(PROBLEMS)): %.out: %.cpp
 %: %.cpp
 %.o: %.cpp
 
-.PHONY: clean $(PROBLEMS)
+.PHONY: clean
 clean:
-	- rm *.out
+	- rm **/*.out
