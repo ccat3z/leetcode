@@ -5,6 +5,7 @@ env_of=$(shell echo '$(patsubst %/,%,$(dir $1))' | tr '[:lower:]' '[:upper:]' | 
 CXX    = g++
 # CXX_FLAGS_LANQIAO_2019_3 = --std=c++98
 CXX_FLAGS_LANQIAO_2020_4 = --std=c++98
+JAVA   = /usr/lib/jvm/java-11-openjdk/bin/java  # java >= 11
 PANDOC = pandoc
 TEST_PREFIX = test@
 RUN_ON_SAVE_PREFIX  = runonsave@
@@ -18,6 +19,14 @@ $(CXX_TEST_TARGETS): $(TEST_PREFIX)%.cpp: %.out
 $(CXX_TEST_TARGETS:$(TEST_PREFIX)%.cpp=%.out): %.out: %.cpp
 	$(CXX) $(CXX_FLAGS_$(call env_of,$*)) -o $@ $(@:.out=.cpp)
 $(CXX_TEST_TARGETS:$(TEST_PREFIX)%=$(RUN_ON_SAVE_PREFIX)%): $(RUN_ON_SAVE_PREFIX)%: $(TEST_PREFIX)%
+
+# java answers
+JAVA_TEST_TARGETS=$(patsubst %,$(TEST_PREFIX)%,$(wildcard **/*.java))
+.PHONY: $(JAVA_TEST_TARGETS)
+$(JAVA_TEST_TARGETS): $(TEST_PREFIX)%.java:
+	@echo "running $*.java"
+	@if [ -f "$*.data" ]; then timeout 5s $(JAVA) $*.java < $*.data; else timeout 5s $(JAVA) $*.java < /dev/null; fi
+$(JAVA_TEST_TARGETS:$(TEST_PREFIX)%=$(RUN_ON_SAVE_PREFIX)%): $(RUN_ON_SAVE_PREFIX)%: $(TEST_PREFIX)%
 
 # note
 note.pdf: note.md note.tex
