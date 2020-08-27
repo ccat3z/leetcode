@@ -121,6 +121,49 @@ C(n, k) = n! / (n - k)! / k!
 C(n, 0) = C(n, n) = 1
 ```
 
+# 图论
+
+## 桥
+
+`b - f`是桥
+
+```
+a - b - f - g
+|   |   |   |
+c - d   h - i
+```
+
+## 欧拉图
+
+即一笔画, 半欧拉图(欧拉通路) 欧拉图(欧拉回路)
+
+### 判断
+
+``` c++
+if (无向图) {
+  if (没有奇度节点) 欧拉图;
+  if (2个奇数节点) 半欧拉图;
+}
+if (有向图 & 强连通) {
+  if (all(入度 == 出度)) 欧拉图;
+  if (
+    only_one(abs(入度 - 出度) == 1)
+    && other(入度 == 出度)
+  ) 半欧拉图;
+}
+```
+
+### 寻找欧拉路
+
+* Fleury: 最后走桥
+* Hierholzer
+  \[[LC 332](https://leetcode-cn.com/problems/reconstruct-itinerary/solution/zhong-xin-an-pai-xing-cheng-by-leetcode-solution/),
+  [OI Wiki Euler](https://oi-wiki.org/graph/euler/)\]
+  1. dfs
+  2. 走过后删除边
+  3. 不可移动后推入栈
+
+
 # Platform
 
 ## acm.ecnu.edu.cn
