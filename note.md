@@ -31,6 +31,23 @@ fclose(stdin);
 fclose(stdout);
 ```
 
+### random
+
+#### C++ 11 \<random\>
+
+``` c++
+mt19937 rng{random_device{}()};
+uniform_int_distribution<int> uni(0, MAX); // [0, MAX]
+int r = uni(rng);
+```
+
+#### C \<cstdlib\>
+
+``` c
+srand(time(NULL));
+int r = rand() % MAX; // [0, MAX)
+```
+
 ### other utilities
   
 * `<utility>`: `pair`
