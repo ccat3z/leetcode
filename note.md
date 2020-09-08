@@ -2,16 +2,9 @@
 
 ## C++ Snippets
 
-### define class
+### 参考手册
 
-``` c++
-class Foo {
-public:
-    Foo() { this->a = 1; }
-    int a;
-private:
-};
-```
+* [cppreference.com](https://cppreference.com)
 
 ### io
 
@@ -31,13 +24,13 @@ fclose(stdin);
 fclose(stdout);
 ```
 
-### random
+### random [0, MAX]
 
 #### C++ 11 \<random\>
 
 ``` c++
 mt19937 rng{random_device{}()};
-uniform_int_distribution<int> uni(0, MAX); // [0, MAX]
+uniform_int_distribution<int> uni(0, MAX);
 int r = uni(rng);
 ```
 
@@ -45,7 +38,7 @@ int r = uni(rng);
 
 ``` c
 srand(time(NULL));
-int r = rand() % MAX; // [0, MAX)
+int r = rand() % (MAX + 1);
 ```
 
 ### other utilities
@@ -138,6 +131,13 @@ C(n, k) = n! / (n - k)! / k!
         = C(n - 1, k) * n / (n - k)
 C(n, 0) = C(n, n) = 1
 ```
+
+#### 枚举组合 $C(6, 4)$
+
+[[LC 77](https://leetcode-cn.com/problems/combinations/solution/zu-he-by-leetcode-solution/)]
+
+* $next(100\underline{1}1\textbf{1}) = 10\underline{1}011$
+* $next(10\underline{1}\underline{11}\textbf{0}) = 1\underline{1}00\underline{11}$
 
 # 图论
 
