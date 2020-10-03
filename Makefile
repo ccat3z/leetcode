@@ -2,6 +2,8 @@
 CXX    = g++
 JAVA   = java   # java >= 11
 PANDOC = pandoc
+PYTHON = python
+TIMEOUT = timeout 5s
 
 # flags
 # CXX_FLAGS_LANQIAO_2019_3 = --std=c++98
@@ -18,7 +20,7 @@ env_of=$(shell echo '$(firstword $(subst /, ,$1))' | tr '[:lower:]' '[:upper:]' 
 input_of=$(shell if [ -f '$(basename $1).data' ]; then echo $(basename $1).data; else echo /dev/null; fi)
 
 # test answers
-TEST_TARGETS=$(patsubst %,$(TEST_PREFIX)%,$(shell find * -name '*.cpp' -o -name '*.java'))
+TEST_TARGETS=$(patsubst %,$(TEST_PREFIX)%,$(shell find * -name '*.cpp' -o -name '*.java' -o -name '*.py'))
 .PHONY: $(TEST_TARGETS)
 # $(TEST_TARGETS): will be defined in follow sections
 
@@ -30,13 +32,17 @@ $(RUN_ON_SAVE_TEST_TARGETS): $(RUN_ON_SAVE_PREFIX)%: $(TEST_PREFIX)%
 # c++ answers
 CXX_TEST_TARGETS=$(filter %.cpp,$(TEST_TARGETS))
 $(CXX_TEST_TARGETS): $(TEST_PREFIX)%.cpp: %.out
-	timeout 5s '$<' < '$(call input_of,$*.cpp)'
+	$(TIMEOUT) '$<' < '$(call input_of,$*.cpp)'
 $(CXX_TEST_TARGETS:$(TEST_PREFIX)%.cpp=%.out): %.out: %.cpp
 	$(CXX) $(CXX_FLAGS_$(call env_of,$*)) -o $@ $(@:.out=.cpp)
 
 # java answers
 $(filter %.java,$(TEST_TARGETS)): $(TEST_PREFIX)%:
-	timeout 5s $(JAVA) '$*' < '$(call input_of,$*)'
+	$(TIMEOUT) $(JAVA) '$*' < '$(call input_of,$*)'
+
+# python answers
+$(filter %.py,$(TEST_TARGETS)): $(TEST_PREFIX)%:
+	$(TIMEOUT) $(PYTHON) '$*' < '$(call input_of,$*)'
 
 # note
 note.pdf: note.md note.tex
