@@ -19,8 +19,13 @@ input_of=$(shell if [ -f '$(basename $1).data' ]; then echo $(basename $1).data;
 
 # test answers
 TEST_TARGETS=$(patsubst %,$(TEST_PREFIX)%,$(shell find * -name '*.cpp' -o -name '*.java'))
-$(TEST_TARGETS:$(TEST_PREFIX)%=$(RUN_ON_SAVE_PREFIX)%): $(RUN_ON_SAVE_PREFIX)%: $(TEST_PREFIX)%
 .PHONY: $(TEST_TARGETS)
+# $(TEST_TARGETS): will be defined in follow sections
+
+# runonsave targets of answer files
+RUN_ON_SAVE_TEST_TARGETS=$(TEST_TARGETS:$(TEST_PREFIX)%=$(RUN_ON_SAVE_PREFIX)%)
+$(RUN_ON_SAVE_TEST_TARGETS): $(RUN_ON_SAVE_PREFIX)%: $(TEST_PREFIX)%
+.PHONY: $(RUN_ON_SAVE_TEST_TARGETS)
 
 # c++ answers
 CXX_TEST_TARGETS=$(filter %.cpp,$(TEST_TARGETS))
