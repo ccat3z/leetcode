@@ -10,14 +10,14 @@ TEST_PREFIX = test@
 RUN_ON_SAVE_PREFIX  = runonsave@
 
 # utils
-## env_of lanqiao-2019-3
-env_of=$(shell echo '$(patsubst %/,%,$(dir $1))' | tr '[:lower:]' '[:upper:]' | tr - _)
+# $(call env_of,lanqiao-2019-3/000.test.cpp) == _LANQIAO_2019_3
+env_of=$(shell echo '$(firstword $(subst /, ,$1))' | tr '[:lower:]' '[:upper:]' | tr - _)
 
-## input_of cn/1.test.cpp
+# $(call input_of,cn/1.test.cpp) == cn/1.test.cpp.data (or /dev/null if data file is not exists)
 input_of=$(shell if [ -f '$(basename $1).data' ]; then echo $(basename $1).data; else echo /dev/null; fi)
 
 # test answers
-TEST_TARGETS=$(patsubst %,$(TEST_PREFIX)%,$(wildcard **/*.cpp **/*.java))
+TEST_TARGETS=$(patsubst %,$(TEST_PREFIX)%,$(shell find * -name '*.cpp' -o -name '*.java'))
 $(TEST_TARGETS:$(TEST_PREFIX)%=$(RUN_ON_SAVE_PREFIX)%): $(RUN_ON_SAVE_PREFIX)%: $(TEST_PREFIX)%
 .PHONY: $(TEST_TARGETS)
 
