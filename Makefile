@@ -6,6 +6,7 @@ PANDOC = pandoc
 # flags
 # CXX_FLAGS_LANQIAO_2019_3 = --std=c++98
 CXX_FLAGS_LANQIAO_2020_4 = --std=c++98
+CXX_FLAGS_ECNU_DASE = -DONLINE_JUDGE -O2 -w -fmax-errors=3 -std=c++14
 TEST_PREFIX = test@
 RUN_ON_SAVE_PREFIX  = runonsave@
 

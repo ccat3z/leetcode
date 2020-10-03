@@ -4,6 +4,7 @@
 
 * `cn/`: [LeetCode CN](https://leetcode-cn.com/)
 * `ecnu/`: [ECNU Online Judge](https://acm.ecnu.edu.cn/)
+* `ecnu-dase/`: [DASE OJ](http://106.75.252.219/)
 * `lanqiao-2019-3/`: 蓝桥杯2019年3月模拟赛
 * `lanqiao-2020-4/`: 蓝桥杯2020年4月模拟赛
 * `other/`: 其他来源
