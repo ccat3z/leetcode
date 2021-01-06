@@ -78,13 +78,28 @@
 #include <vector>
 #include <tuple>
 #include <map>
+#include <bitset>
 #include "prettyprint.h"
 using namespace std;
 
 // @lc code=start
+#define MAX_KEYS (20)
 class Solution {
 public:
-    map<string, map<string, double>> graph;
+    map<string, short> keys;
+    int key_max = -1;
+    inline int get_key(const string &a) {
+        if (keys.find(a) == keys.end()) {
+            keys[a] = ++key_max;
+        }
+        return keys[a];
+    }
+
+    double graph[MAX_KEYS][MAX_KEYS];
+    Solution() {
+        fill(&graph[0][0], &graph[MAX_KEYS - 1][MAX_KEYS], -1);
+    }
+
     vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
         vector<double> res;
 
@@ -93,34 +108,44 @@ public:
         for (int i = 0; i < eq_len; ++i) {
             vector<string> &eq = equations[i];
             double &v = values[i];
-            graph[eq[0]][eq[1]] = v;
-            graph[eq[1]][eq[0]] = 1/v;
+            graph[get_key(eq[0])][get_key(eq[1])] = v;
+            graph[get_key(eq[1])][get_key(eq[0])] = 1/v;
         }
-
-        // cout << graph << endl;
 
         // calc query
         double result;
         for (auto query : queries) {
-            // cout << "query " << query[0] << " " << query[1] << endl;
-            result = this->query(query[0], query[1], 0);
-            res.emplace_back(result);
+            res.emplace_back(this->query(query[0], query[1]));
         }
         return res;
     }
 
-    double query(const string &a, const string &b, int depth) {
-        if (depth > 5) return -1;
-        if (graph.find(a) == graph.end()) return -1;
+    bitset<MAX_KEYS> visited;
+    double query(const string &a, const string &b) {
+        if (keys.find(a) == keys.end() || keys.find(b) == keys.end()) {
+            return -1;
+        }
+
+        visited.reset();
+        return _query(keys[a], keys[b]);
+    }
+    double _query(int a, int b) {
         if (a == b) return 1;
-        for (auto &edge : graph[a]) {
-            auto &n = edge.first;
-            auto &v_a_n = edge.second;
-            double v_n_b = query(n, b, depth + 1);
+        visited[a] = 1;
+
+        for (int i = 0; i < MAX_KEYS; ++i) {
+            int n = (i + b) % MAX_KEYS;
+            if (visited[n]) continue;
+
+            auto &v_a_n = graph[a][n];
+            if (v_a_n == -1) continue;
+            double v_n_b = _query(n, b);
             if (v_n_b != -1) {
-                return v_a_n * v_n_b;
+                graph[a][b] = v_a_n * v_n_b;
+                return graph[a][b];
             }
         }
+
         return -1;
     }
 };
@@ -143,6 +168,10 @@ int main() {
         {
             {{"a","e"},{"b","e"}}, {4.0,3.0},
             {{"a","b"},{"e","e"},{"x","x"}}
+        },
+        {
+            {{"a","b"},{"b","c"},{"bc","cd"}}, {1.5,2.5,5.0},
+            {{"a","c"},{"c","b"},{"bc","cd"},{"cd","bc"}}
         }
     };
     
