@@ -67,6 +67,9 @@
  * 
  * 
  */
+#include <algorithm>
+using namespace std;
+
 struct ListNode {
     int val;
     ListNode *next;
@@ -85,14 +88,10 @@ struct ListNode {
 class Solution {
 public:
     void deleteNode(ListNode* node) {
-        ListNode *prev = nullptr;
-        while (node->next) {
-            node->val = node->next->val;
-            prev = node;
-            node = node->next;
-        }
-        prev->next = nullptr;
-        delete prev->next;
+        swap(node->val, node->next->val);       
+        ListNode *next = node->next->next;
+        delete node->next;
+        node->next = next;
     }
 };
 // @lc code=end
