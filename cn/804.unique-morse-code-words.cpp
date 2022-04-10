@@ -79,19 +79,19 @@
 using namespace std;
 
 // @lc code=start
+const static string dict[] = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
 class Solution {
 public:
     int uniqueMorseRepresentations(vector<string>& words) {
-        vector<string> dict = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
         unordered_set<string> res;
 
         for (auto &word : words) {
             string trans;
             for (auto c : word) {
-                trans += dict[c - 'a'];
+                trans.append(dict[c - 'a']);
             }
 
-            res.insert(trans);
+            res.emplace(trans);
         }
 
         return res.size();
