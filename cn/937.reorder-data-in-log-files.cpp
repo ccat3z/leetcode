@@ -79,36 +79,39 @@ using namespace std;
 class Solution {
 public:
     vector<string> reorderLogFiles(vector<string>& logs) {
-        vector<string> res;
-        vector<pair<string_view, string_view>> abc_logs;
-        vector<string_view> num_logs;
+        stable_sort(logs.begin(), logs.end(), [](const string &log1, const string &log2) {
+            int tag_size[2];
+            tag_size[0] = log1.find_first_of(' ');
+            tag_size[1] = log2.find_first_of(' ');
 
-        for (auto &log : logs) {
-            int tag_size = 0;
-            auto log_start = log.begin();
-            for (; *log_start != ' '; log_start++) {
-                tag_size++;
+            bool is_num[2];
+            is_num[0] = isdigit(log1[tag_size[0] + 1]);
+            is_num[1] = isdigit(log2[tag_size[1] + 1]);
+
+            if (is_num[0] && is_num[1]) {
+                return false;
             }
-            log_start++;
 
-            if (find_if(log_start, log.end(), [](const char &it) {
-                return '0' <= it && it <= '9';
-            }) == log.end()) {
-                abc_logs.emplace_back(string_view(log.c_str() + tag_size + 1), string_view(log.c_str(), tag_size));
-            } else {
-                num_logs.emplace_back(log);
+            if (is_num[0]) {
+                return false;
             }
-        }
-        sort(abc_logs.begin(), abc_logs.end());
 
-        for (auto &log : abc_logs) {
-            res.emplace_back(log.second.data());
-        }
-        for (auto &log : num_logs) {
-            res.emplace_back(log);
-        }
+            if (is_num[1]) {
+                return true;
+            }
 
-        return res;
+            string_view msg1(log1.c_str() + tag_size[0] + 1);
+            string_view msg2(log2.c_str() + tag_size[1] + 1);
+            if (msg1 != msg2) {
+                return msg1 < msg2;
+            }
+            
+            string_view tag1(log1.c_str(), tag_size[0]);
+            string_view tag2(log2.c_str(), tag_size[1]);
+            return tag1 < tag2;
+        });
+
+        return logs;
     }
 };
 // @lc code=end
