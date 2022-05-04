@@ -66,27 +66,21 @@
 #include <iostream>
 #include <queue>
 using namespace std;
+// REVIEW
+// https://leetcode-cn.com/problems/find-the-winner-of-the-circular-game/solution/zhao-chu-you-xi-de-huo-sheng-zhe-by-leet-w2jd/
+// https://leetcode-cn.com/circle/article/BOoxAL/
 
 // @lc code=start
 class Solution {
 public:
     int findTheWinner(int n, int k) {
-        queue<int> q;
-        for (int i = 0; i < n; ++i) {
-            q.emplace(i);
-        }
+        return findTheWinner_(n, k) + 1;
+    }
 
-        while (q.size() > 1) {
-            for (int _ = 0; _ < k - 1; ++_) {
-                int top = q.front();
-                q.pop();
-                q.emplace(top);
-            }
-            // cout << '!' << q.front() << endl;
-            q.pop();
-        }
+    int findTheWinner_(int n, int k) {
+        if (n == 1) return 0;
 
-        return q.front() + 1;
+        return (findTheWinner_(n - 1, k) + k) % n;
     }
 };
 // @lc code=end
