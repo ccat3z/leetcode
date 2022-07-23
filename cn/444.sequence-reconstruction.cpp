@@ -33,8 +33,7 @@ public:
             }
         }
 
-        int i;
-        for (i = 0; i < nums.size() && nums[i] == zero_inbound; i++) {
+        for (int i = 0; i < nums.size() && nums[i] == zero_inbound; i++) {
             for (int &next : outbounds[nums[i]]) {
                 if (--inbounds[next] == 0) {
                     if (zero_inbound != nums[i]) {
@@ -47,7 +46,7 @@ public:
             }
         }
 
-        return i == nums.size();
+        return true;
     }
 };
 
