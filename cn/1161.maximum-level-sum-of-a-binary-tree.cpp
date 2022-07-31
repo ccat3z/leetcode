@@ -52,9 +52,9 @@
  */
 #include "leetcode.h"
 #include <iostream>
-#include <queue>
 #include <limits>
-#include <algorithm>
+#include <vector>
+#include <memory>
 using namespace std;
 using TreeNode = leetcode::TreeNode<int>;
 
@@ -76,37 +76,30 @@ public:
         int sum_max = numeric_limits<int>::min();
         int max_layer = 1;
 
-        queue<TreeNode *> q;
-        q.emplace(root);
-
+        vector<TreeNode *> layer = {root};
         int cur_layer = 1;
-        int layer_size = 1;
-        int next_layer_size = 0;
-        int layer_sum = 0;
-        while (!q.empty()) {
-            while (layer_size-- > 0) {
-                auto &node = q.front();
-                layer_sum += node->val;
+
+        while (!layer.empty()) {
+            int sum = 0;
+            vector<TreeNode *> next;
+            for (auto & node : layer) {
+                sum += node->val;
                 
                 if (node->left) {
-                    q.push(node->left);
-                    next_layer_size++;
+                    next.emplace_back(node->left);
                 }
                 if (node->right) {
-                    q.push(node->right);
-                    next_layer_size++;
+                    next.emplace_back(node->right);
                 }
-                q.pop();
             }
 
-            if (layer_sum > sum_max) {
+            if (sum > sum_max) {
                 max_layer = cur_layer;
-                sum_max = layer_sum;
+                sum_max = sum;
             }
-            layer_size = next_layer_size;
-            next_layer_size = 0;
-            layer_sum = 0;
+
             cur_layer++;
+            layer = move(next);
         }
 
         return max_layer;
