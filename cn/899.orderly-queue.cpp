@@ -75,9 +75,9 @@ public:
                 len++;
             } else {
                 if (a > b) {
-                    i++;
+                    i += len + 1; // see https://oi-wiki.org/string/minimal-string/
                 } else {
-                    j++;
+                    j += len + 1;
                 }
                 len = 0;
                 if (i == j) {
