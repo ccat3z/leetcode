@@ -83,31 +83,32 @@ using TreeNode = leetcode::TreeNode<int>;
 class Solution {
 public:
     TreeNode* addOneRow(TreeNode* root, int val, int depth) {
-        if (depth == 1) {
-            return addOneRow(root, val, depth, true);
-        }
-
-        root->left = addOneRow(root->left, val, depth-1, true);
-        root->right = addOneRow(root->right, val, depth-1, false);
-        return root;
-    }
-
-    TreeNode* addOneRow(TreeNode* root, int val, int depth, bool left) {
-        if (depth == 1) {
-            auto *new_node = new TreeNode(val);
-            if (left) {
-                new_node->left = root;
-            } else {
-                new_node->right = root;
-            }
-            return new_node;
-        }
-
         if (!root) return nullptr;
 
-        root->left = addOneRow(root->left, val, depth-1, true);
-        root->right = addOneRow(root->right, val, depth-1, false);
-        return root;       
+        switch (depth) {
+        case 1: {
+            auto *new_node = new TreeNode(val);
+            new_node->left = root;
+            return new_node;
+        }
+        case 2: {
+            auto *new_l = new TreeNode(val);
+            new_l->left = root->left;
+            root->left = new_l;
+
+            auto *new_r = new TreeNode(val);
+            new_r->right = root->right;
+            root->right = new_r;
+
+            return root;
+        }
+        default:
+            break;
+        }
+
+        root->left = addOneRow(root->left, val, depth-1);
+        root->right = addOneRow(root->right, val, depth-1);
+        return root;
     }
 };
 // @lc code=end
@@ -117,7 +118,7 @@ int main() {
     root->left = new TreeNode(2);
     root->right = new TreeNode(6);
     root->left->left = new TreeNode(3);
-    root->left->right = new TreeNode(1);
+    root->left->right = new TreeNode(7);
     root->right->left = new TreeNode(5);
 
     cout << Solution().addOneRow(root, 1, 4) << endl;
