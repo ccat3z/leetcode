@@ -62,6 +62,7 @@
 #include <iostream>
 #include <vector>
 #include <initializer_list>
+#include <queue>
 #include "prettyprint.h"
 
 using namespace std;
@@ -107,44 +108,35 @@ ostream &operator<<(ostream &os, const ListNode *node) {
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        ListNode* head = nullptr;
-
-        int idx = min(lists);
-        if (idx < 0) return head;
-        head = lists[idx];
-        lists[idx] = lists[idx]->next;
-
-        ListNode *prev = head;
-        while (true) {
-            idx = min(lists);
-            if (idx < 0) break;
-
-            prev->next = lists[idx];
-            lists[idx] = lists[idx]->next;
-
-            prev = prev->next;
-            prev->next = nullptr;
-
-            // cout << head << endl;
-            // cout << lists << endl;
+        auto comp = [](ListNode *&a, ListNode *&b) {
+            return a->val > b->val;
+        };
+        priority_queue<ListNode *, vector<ListNode *>, decltype(comp)> q(comp);
+        for (auto &list : lists) {
+            if (list) q.emplace(list);
         }
 
-        return head;
-    }
+        ListNode *head = nullptr;
+        if (q.empty()) return head;
 
-    int min(vector<ListNode *> &heads) {
-        int min_val = 1000;
-        int min_idx = -1;
-        for (int i = 0; i < heads.size(); i++) {
-            auto &head = heads[i];
-            if (!head) continue;
-            if (head->val < min_val) {
-                min_val = head->val;
-                min_idx = i;
+        head = q.top();
+        q.pop();
+        if (head->next) {
+            q.push(head->next);
+        }
+
+        auto *prev = head;
+        while (!q.empty()) {
+            prev->next = q.top();
+            q.pop();
+
+            prev = prev->next;
+            if (prev->next) {
+                q.push(prev->next);
             }
         }
 
-        return min_idx;
+        return head;
     }
 };
 // @lc code=end
