@@ -53,6 +53,7 @@
 #include <algorithm>
 #include <utility>
 #include <map>
+#include <stack>
 #include "prettyprint.h"
 using namespace std;
 
@@ -60,26 +61,22 @@ using namespace std;
 class Solution {
 public:
     int maxChunksToSorted(vector<int>& arr) {
-        vector<int> sorted = arr;
-        sort(sorted.begin(), sorted.end());
+        stack<int> s;
 
-        int res = 0;
-        map<int, int> counter;
-        for (int i = 0; i < arr.size(); i++) {
-            int &a = arr[i];
-            int &b = sorted[i];
-            if ((++counter[a]) == 0) {
-                counter.erase(a);
-            }
-            if ((--counter[b]) == 0) {
-                counter.erase(b);
-            }
-            if (counter.size() == 0) {
-                res++;
+        for (auto &a : arr) {
+            if (s.empty() || s.top() <= a) {
+                s.emplace(a);
+            } else {
+                auto top = s.top();
+                s.pop();
+                while (!s.empty() && s.top() > a) {
+                    s.pop();
+                }
+                s.emplace(top);
             }
         }
 
-        return res;
+        return s.size();
     }
 
 };
