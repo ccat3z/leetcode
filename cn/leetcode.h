@@ -1,5 +1,7 @@
 #ifndef _LEETCODE_H_
 #include <iostream>
+#include <queue>
+#define null nullptr
 
 namespace leetcode {
     template<typename T> struct TreeNode {
@@ -29,6 +31,63 @@ namespace leetcode {
         ~TreeNode() {
             delete left;
             delete right;
+        }
+
+        static TreeNode<T> *create(nullptr_t val) { return nullptr; }
+        static TreeNode<T> *create(T val) { return new TreeNode<T>(val); }
+
+        template<class Left> static inline void append(
+            std::queue<TreeNode<T> *> &pending,
+            Left l_value
+        ) {
+            if (pending.empty()) {
+                throw std::logic_error("Missing parent");
+            }
+
+            pending.front()->left = create(l_value);
+        }
+
+        template<class Left, class Right> static inline void append(
+            std::queue<TreeNode<T> *> &pending,
+            Left l_value, Right r_value
+        ) {
+            if (pending.empty()) {
+                throw std::logic_error("Missing parent");
+            }
+
+            pending.front()->left = create(l_value);
+            pending.front()->right = create(r_value);
+        }
+
+        template<class Left, class Right, class ...Items> static inline void append(
+            std::queue<TreeNode<T> *> &pending,
+            Left l_value, Right r_value, Items ...list
+        ) {
+            if (pending.empty()) {
+                throw std::logic_error("Missing parent");
+            }
+
+            auto *parent = pending.front();
+            auto *left = create(l_value);
+            auto *right = create(r_value);
+            parent->left = left;
+            parent->right = right;
+
+            pending.pop();
+            if (left) pending.emplace(left);
+            if (right) pending.emplace(right);
+
+            append(pending, list...);
+        }
+
+        template<class First, class ...Other> static TreeNode<T> *create(First first, Other ...other) {
+            auto *root = create(first);
+            if (root == nullptr) return root;
+
+            std::queue<TreeNode<T> *> pending;
+            pending.emplace(root);
+            append(pending, other...);
+            return root;
         }
     };
 
