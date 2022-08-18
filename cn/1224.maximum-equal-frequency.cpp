@@ -61,12 +61,13 @@ using namespace std;
 class Solution {
 public:
     int maxEqualFreq(vector<int>& nums) {
-        map<int, int> counters;
+        int counters[100001] = {0};
         int res = 0;
         int max_count = 0;
         int top1_size = 0;
         int top2_size = 0;
         int cnt1_size = 0;
+        int cnted_num = 0;
 
         for (int i = 0; i < nums.size(); i++) {
             auto &num = nums[i];
@@ -79,6 +80,7 @@ public:
                 } else if (max_count == 1) {
                     top2_size++;
                 }
+                cnted_num++;
             }
 
             counter++;
@@ -99,11 +101,11 @@ public:
                 cnt1_size++;
             }
 
-            if (top1_size == counters.size() - 1 && cnt1_size == 1) { // 3, 3, 3, 1, 3
+            if (top1_size == cnted_num - 1 && cnt1_size == 1) { // 3, 3, 3, 1, 3
                 res = i+1;
-            } else if (top2_size == counters.size() - 1 && top1_size == 1) { // 2, 2, 2, 3, 2
+            } else if (top2_size == cnted_num - 1 && top1_size == 1) { // 2, 2, 2, 3, 2
                 res = i+1;
-            } else if (top1_size == counters.size() && max_count == 1) { // 1, 1, 1, 1
+            } else if (top1_size == cnted_num && max_count == 1) { // 1, 1, 1, 1
                 res = i+1;
             }
 
