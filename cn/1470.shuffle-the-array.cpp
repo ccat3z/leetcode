@@ -58,13 +58,15 @@ using namespace std;
 class Solution {
 public:
     vector<int> shuffle(vector<int>& nums, int n) {
-        vector<int> res;
-        res.reserve(2 * n);
+        int orig_flag = (1 << 10) - 1;
         for (int i = 0; i < n; ++i) {
-            res.emplace_back(nums[i]);
-            res.emplace_back(nums[n + i]);
+            nums[2 * i] |= (nums[i] & orig_flag) << 10;
+            nums[2 * i + 1] |= (nums[n + i] & orig_flag) << 10;
         }
-        return res;
+        for (auto &num : nums) {
+            num >>= 10;
+        }
+        return nums;
     }
 };
 // @lc code=end
