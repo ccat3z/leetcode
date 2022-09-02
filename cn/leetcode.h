@@ -33,6 +33,7 @@ namespace leetcode {
             delete right;
         }
 
+        static TreeNode<T> *create() { return nullptr; }
         static TreeNode<T> *create(nullptr_t val) { return nullptr; }
         static TreeNode<T> *create(T val) { return new TreeNode<T>(val); }
 
