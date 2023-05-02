@@ -5,7 +5,6 @@
 #include <type_traits>
 #include <iostream>
 
-
 namespace leetcode {
     template <typename TMethod>
     struct solution_signature;
@@ -48,8 +47,6 @@ namespace leetcode {
             ((std::cerr << (ArgIdxs == 0 ? "" : ", ") << std::get<ArgIdxs>(params)), ...);
             std::cerr << std::endl;
         })(std::make_index_sequence<std::tuple_size_v<std::remove_reference_t<decltype(params)>> - 1>());
-
-
     }
 
     template <typename TMethod>
