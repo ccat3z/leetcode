@@ -56,3 +56,6 @@ namespace leetcode {
         };
     }
 }
+
+#define LC_D(METHOD_NAME) auto _leetcode_solution_tester = leetcode::make_tester(&Solution::METHOD_NAME)
+#define LC_T(...) _leetcode_solution_tester({__VA_ARGS__})
