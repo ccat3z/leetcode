@@ -28,16 +28,16 @@ public:
     vector<int> numSmallerByFrequency(const vector<string>& queries, const vector<string>& words) {
         vector<int> ans;
 
-        vector<int> w;
+        vector<int> res(11);
         for (auto &word : words) {
-            w.emplace_back(f(word));
+            auto r = f(word);
+            for (int i = 0; i < r; ++i) {
+                res[i] += 1;
+            } 
         }
-        std::sort(w.begin(), w.end());
 
         for (auto &query : queries) {
-            auto it = std::upper_bound(w.begin(), w.end(), f(query));
-            if (it == w.end()) ans.emplace_back(0);
-            else ans.emplace_back(w.size() - (it - w.begin()));
+            ans.emplace_back(res[f(query)]);
         }
 
         return ans;
