@@ -19,6 +19,11 @@ namespace leetcode {
     using solution_params_t = typename solution_signature<S>::params_t;
 
     template <typename T>
+    std::ostream &operator<<(std::ostream &o, const std::vector<T> &vec);
+    template <typename ...Elems>
+    std::ostream &operator<<(std::ostream &o, const std::tuple<Elems...> &tp);
+
+    template <typename T>
     std::ostream &operator<<(std::ostream &o, const std::vector<T> &vec) {
         o << "[";
         for (size_t i = 0; i < vec.size(); i++) {
@@ -28,6 +33,18 @@ namespace leetcode {
             }
         }
         o << "]";
+        return o;
+    }
+
+    template <typename ...Elems>
+    std::ostream &operator<<(std::ostream &o, const std::tuple<Elems...> &tp) {
+        auto printer = [&]<size_t... I>(std::index_sequence<I...>) {
+            o << "(";
+            (..., (o << (I == 0? "" : ", ") << std::get<I>(tp)));
+            o << ")";
+        };
+
+        printer(std::make_index_sequence<std::tuple_size_v<std::tuple<Elems...>>>());
         return o;
     }
 
