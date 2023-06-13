@@ -1,5 +1,6 @@
 // https://leetcode.cn/problems/number-of-unequal-triplets-in-array/
 
+#include <unordered_map>
 #include <vector>
 #include "leetcode_helper.h"
 
@@ -9,15 +10,16 @@ class Solution {
 public:
     int unequalTriplets(const vector<int>& nums) {
         int res = 0;
+        unordered_map<int, int> cnts;
 
-        for (int i = 0; i < nums.size(); ++i) {
-            for (int j = i + 1; j < nums.size(); ++j) {
-                for (int k = j + 1; k < nums.size(); ++k) {
-                    if (nums[i] != nums[j] && nums[i] != nums[k] && nums[j] != nums[k]) {
-                        ++res;
-                    }
-                }
-            }
+        for (auto &n : nums) {
+            ++cnts[n];
+        }
+
+        int i = 0;
+        for (auto &[n, cnt] : cnts) {
+            res += i * cnt * (nums.size() - cnt - i);
+            i += cnt;
         }
 
         return res;
