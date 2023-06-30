@@ -6,6 +6,7 @@ PYTHON = python
 TIMEOUT = timeout 5s
 
 # flags
+CXX_FLAGS_DEFAULT = -std=c++20 -fsanitize=address
 CXX_FLAGS_CN = -std=c++20 -fsanitize=address -g -O0
 # CXX_FLAGS_LANQIAO_2019_3 = --std=c++98
 CXX_FLAGS_LANQIAO_2020_4 = --std=c++98
@@ -35,7 +36,7 @@ CXX_TEST_TARGETS=$(filter %.cpp,$(TEST_TARGETS))
 $(CXX_TEST_TARGETS): $(TEST_PREFIX)%.cpp: %.out
 	$(TIMEOUT) '$<' < '$(call input_of,$*.cpp)'
 $(CXX_TEST_TARGETS:$(TEST_PREFIX)%.cpp=%.out): %.out: %.cpp
-	$(CXX) $(CXX_FLAGS_$(call env_of,$*)) -o $@ $(@:.out=.cpp)
+	$(CXX) $(or $(CXX_FLAGS_$(call env_of,$*)),$(CXX_FLAGS_DEFAULT)) -o $@ $(@:.out=.cpp)
 
 # java answers
 $(filter %.java,$(TEST_TARGETS)): $(TEST_PREFIX)%:
