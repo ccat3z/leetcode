@@ -35,24 +35,37 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include "leetcode_helper.h"
+
 using namespace std;
 
 // @lc code=start
 class Solution {
 public:
+    int _maxArea(const vector<int>& height) {
+        auto h = height;
+        return maxArea(h);
+    }
+
     int maxArea(vector<int>& height) {
-        int a, b, fill = 0;
-        for (a = 0; a < height.size(); a++) {
-            for (b = 1; b < a; b++) {
-                fill = max(fill, (a - b) * (min(height[a], height[b])));
+        int a = 0, b = height.size() - 1;
+        int max_fill = 0;
+        while (a != b) {
+            max_fill = std::max(std::min(height[a], height[b]) * (b - a), max_fill);
+            if (height[b] < height[a]) {
+                --b;
+            } else {
+                ++a;
             }
         }
-        return fill;
+        return max_fill;
     }
 };
 // @lc code=end
 
 int main() {
-    vector<int> height = {1,8,6,2,5,4,8,3,7};
-    cout << Solution().maxArea(height) << endl;
+    LC_D(Solution::_maxArea);
+    LC_T({1,8,6,2,5,4,8,3,7}, 49);
+    LC_T({1,1}, 1);
+    return 0;
 }
