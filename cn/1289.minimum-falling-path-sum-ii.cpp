@@ -9,27 +9,27 @@ public:
     int minFallingPathSum(const vector<vector<int>>& grid) {
         if (grid.size() == 1) return grid[0][0];
 
-        std::vector<int> cache;
-        auto line_size = grid[0].size();
-        cache.reserve(line_size);
-        for (int i = 0; i < line_size; ++i) cache.emplace_back(0);
+        int min = 0, min2 = 0, min_idx = -1;
+        int curr_min, curr_min2, curr_min_idx;
 
-        std::vector<int> cache_curr;
         for (auto & line : grid) {
-            cache_curr.resize(line_size);
-            for (int i = 0; i < line_size; ++i) {
-                cache_curr[i] = 50000;
-                for (int j = 0; j < line_size; ++j) {
-                    if (i == j) continue;
-                    cache_curr[i] = std::min(cache_curr[i], cache[j] + line[i]);
+            curr_min = curr_min2 = 50000;
+            for (int i = 0; i < line.size(); ++i) {
+                int curr = (min_idx == i ? min2 : min) + line[i];
+                if (curr < curr_min) {
+                    curr_min2 = curr_min;
+                    curr_min = curr;
+                    curr_min_idx = i;
+                } else if (curr < curr_min2) {
+                    curr_min2 = curr;
                 }
             }
-            cache = std::move(cache_curr);
+            min = curr_min;
+            min2 = curr_min2;
+            min_idx = curr_min_idx;
         }
 
-        int res = 50000;
-        for (auto r : cache) res = std::min(res, r);
-        return res;
+        return min;
     }
 };
 
